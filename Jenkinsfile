@@ -200,7 +200,7 @@ pipeline{
                 }
             }        
         }
-        post {
+        post{
             success {
                 echo "OrderFlow Pipeline SUCCESS (build #${BUILD_NUMBER})"
             }
@@ -219,4 +219,5 @@ pipeline{
             }
         }
     }
+
 }
