@@ -3,7 +3,7 @@ pipeline{
 
     environment{
         BUILD_TAG = "${env.BUILD_NUMBER}" //numero BUILD
-        PROJECT_NAME = "corso-devops-order-service"   // nome progetto
+        PROJECT_NAME = "corso-devops"   // nome progetto
     }
 
     options {
@@ -229,6 +229,7 @@ pipeline{
             }
     }
 }
+
 
 
 
