@@ -43,16 +43,20 @@ pipeline{
                     TOOLS_DIR="${JENKINS_HOME}/bin"
                     mkdir -p "${TOOLS_DIR}"
  
-                    export PATH="${TOOLS_DIR}:${PATH}"
-            
+                    
+                    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+                    unzip -o awscliv2.zip
+                    ./aws/install --update
+                    aws --version
+                    
                     # AWS CLI v2 - installazione utente (senza sudo)
                     if ! command -v aws >/dev/null 2>&1; then
                         echo "Installing AWS CLI v2..."
-                        curl -sL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip"
-                        unzip -qo /tmp/awscliv2.zip -d /tmp
                         
-                        # La flag -i installa per l'utente corrente
-                        /tmp/aws/install -i "${TOOLS_DIR}/aws-cli" -b "${TOOLS_DIR}" --update
+                        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+                        unzip -o awscliv2.zip
+                        ./aws/install --update
+                        aws --version
                         
                         # Pulizia
                         rm -rf /tmp/awscliv2.zip /tmp/aws
@@ -228,6 +232,7 @@ pipeline{
             }
     }
 }
+
 
 
 
