@@ -43,25 +43,28 @@ pipeline{
                     TOOLS_DIR="${JENKINS_HOME}/bin"
                     mkdir -p "${TOOLS_DIR}"
  
+                    export PATH="${TOOLS_DIR}:${PATH}"
             
-                    # Installa AWS CLI usando pip (più semplice e non richiede permessi speciali)
+                    # AWS CLI v2 - installazione utente (senza sudo)
                     if ! command -v aws >/dev/null 2>&1; then
-                        echo "Installing AWS CLI via pip..."
+                        echo "Installing AWS CLI v2..."
+                        curl -sL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip"
+                        unzip -qo /tmp/awscliv2.zip -d /tmp
                         
-                        # Assicurati che pip sia installato
-                        python3 -m ensurepip --upgrade || true
+                        # La flag -i installa per l'utente corrente
+                        /tmp/aws/install -i "${TOOLS_DIR}/aws-cli" -b "${TOOLS_DIR}" --update
                         
-                        # Installa AWS CLI per l'utente corrente (--user)
-                        python3 -m pip install --user awscli
-                        
-                        # Aggiungi ~/.local/bin al PATH (dove pip installa i binari utente)
-                        export PATH="${HOME}/.local/bin:${PATH}"
+                        # Pulizia
+                        rm -rf /tmp/awscliv2.zip /tmp/aws
                         
                         echo "Installed: $(aws --version)"
                     else
                         echo "PASS: AWS CLI already installed ($(aws --version))"
                     fi
-                '''
+                    
+                    echo "=== Tools ready ==="
+                   
+                    '''
             }
         }
         stage('Validate'){
@@ -225,6 +228,7 @@ pipeline{
             }
     }
 }
+
 
 
 
