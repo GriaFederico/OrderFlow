@@ -53,9 +53,9 @@ pipeline{
                     if ! command -v aws >/dev/null 2>&1; then
                         echo "Installing AWS CLI v2..."
                         
-                        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+                        curl -sL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
                         unzip -o awscliv2.zip
-                        ./aws/install --update
+                        ./aws/install --install-dir ~/aws-cli --bin-dir ~/bin
                         aws --version
                         
                         # Pulizia
@@ -232,6 +232,7 @@ pipeline{
             }
     }
 }
+
 
 
 
