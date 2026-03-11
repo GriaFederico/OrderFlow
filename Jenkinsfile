@@ -167,6 +167,9 @@ pipeline{
         }       
         stage('Push to ECR') {
             steps {
+                script {
+                    env.PATH = "/var/jenkins_home/bin:${env.PATH}"
+                }
                 withCredentials([
                     usernamePassword(
                         credentialsId: 'aws-credentials',
@@ -219,6 +222,7 @@ pipeline{
             }
     }
 }
+
 
 
 
