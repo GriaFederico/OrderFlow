@@ -49,8 +49,8 @@ pipeline{
                         
                         curl -sL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
                         unzip -o awscliv2.zip
-                        ./aws/install --install-dir ~/aws-cli --bin-dir ~/bin
-                        aws --version
+                        /tmp/aws/install --install-dir /usr/local/aws-cli --bin-dir /usr/local/bin --update
+                        
                         
                         # Pulizia
                         rm -rf /tmp/awscliv2.zip /tmp/aws
@@ -59,7 +59,7 @@ pipeline{
                     else
                         echo "PASS: AWS CLI already installed ($(aws --version))"
                     fi
-                    
+                    aws --version
                     echo "=== Tools ready ==="
                    
                     '''
@@ -226,6 +226,7 @@ pipeline{
             }
     }
 }
+
 
 
 
