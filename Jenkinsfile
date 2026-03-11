@@ -45,19 +45,11 @@ pipeline{
                 
                     # AWS CLI v2 - installazione utente (senza sudo)
                     if ! command -v aws >/dev/null 2>&1; then
-                        echo "Installing AWS CLI v2..."
-                        
-                        curl -sL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-                        unzip -o awscliv2.zip
+                        curl -sL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip"
+                        cd /tmp && unzip -qo awscliv2.zip
+                        chmod +x /tmp/aws/install
                         /tmp/aws/install --install-dir /usr/local/aws-cli --bin-dir /usr/local/bin --update
-                        
-                        
-                        # Pulizia
                         rm -rf /tmp/awscliv2.zip /tmp/aws
-                        
-                        echo "Installed: $(aws --version)"
-                    else
-                        echo "PASS: AWS CLI already installed ($(aws --version))"
                     fi
                     aws --version
                     echo "=== Tools ready ==="
@@ -226,6 +218,7 @@ pipeline{
             }
     }
 }
+
 
 
 
