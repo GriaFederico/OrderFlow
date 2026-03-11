@@ -42,9 +42,9 @@ pipeline{
                     echo "=== Installing required tools ==="
                     TOOLS_DIR="${JENKINS_HOME}/bin"
                     mkdir -p "${TOOLS_DIR}"            
-                    cd tmp
+                    cd /tmp
                     ls -la
-                    cd aws
+                    cd /aws
                     ls -la
                     cd ..
                     cd ..
@@ -225,6 +225,7 @@ pipeline{
             }
     }
 }
+
 
 
 
