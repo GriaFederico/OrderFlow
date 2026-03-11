@@ -44,15 +44,15 @@ pipeline{
                     mkdir -p "${TOOLS_DIR}"
  
                     # AWS CLI v2
-                    if ! command -v aws >/dev/null 2>&1; then
+                    if [ -x "${TOOLS_DIR}/aws" ]; then
+                        echo "PASS: AWS CLI already installed ($(${TOOLS_DIR}/aws --version))"
+                    else
                         echo "Installing AWS CLI v2..."
                         curl -sL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip"
                         unzip -qo /tmp/awscliv2.zip -d /tmp
-                        /tmp/aws/install --install-dir "${TOOLS_DIR}/aws-cli" --bin-dir "${TOOLS_DIR}"
+                        /tmp/aws/install --install-dir "${TOOLS_DIR}/aws-cli" --bin-dir "${TOOLS_DIR}" --update
                         rm -rf /tmp/awscliv2.zip /tmp/aws
                         echo "Installed: $(aws --version)"
-                    else
-                        echo "PASS: AWS CLI already installed ($(aws --version))"
                     fi
  
                     echo "=== Tools ready ==="
@@ -220,4 +220,5 @@ pipeline{
             }
     }
 }
+
 
