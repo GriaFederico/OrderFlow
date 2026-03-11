@@ -175,7 +175,7 @@ pipeline{
                         passwordVariable: 'AWS_SECRET_ACCESS_KEY'
                     ),
                     string(
-                        credentialsId: 'ecr-registry-url',
+                        credentialsId: 'ecr-registry-URL',
                         variable: 'ECR_REGISTRY'
                     )
                 ]) {
@@ -220,6 +220,7 @@ pipeline{
             }
     }
 }
+
 
 
 
