@@ -42,18 +42,15 @@ pipeline{
                     echo "=== Installing required tools ==="
                     TOOLS_DIR="${JENKINS_HOME}/bin"
                     mkdir -p "${TOOLS_DIR}"            
-                    cd /tmp
-                    ls -la
-                    cd ..
                     
                     # AWS CLI v2 - installazione utente (senza sudo)
                     if ! command -v aws >/dev/null 2>&1; then
                         curl -sL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip"
                         cd /tmp && unzip -qo awscliv2.zip
                         chmod +x /tmp/aws/install
-                        ls -la
-                        /tmp/aws/install --install-dir /usr/local/aws-cli --bin-dir /usr/local/bin --update
+                        /tmp/aws/install --install-dir "$HOME/aws-cli" --bin-dir "$HOME/bin" --update
                         rm -rf /tmp/awscliv2.zip /tmp/aws
+                        echo "Installed: $($HOME/bin/aws --version)"
                     fi
                     aws --version
                     echo "=== Tools ready ==="
@@ -222,6 +219,7 @@ pipeline{
             }
     }
 }
+
 
 
 
