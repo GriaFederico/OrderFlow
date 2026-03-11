@@ -188,7 +188,7 @@ pipeline{
                             --password-stdin ${ECR_REGISTRY}
  
                         echo "=== Pushing images ==="
-                        for svc in corso-devops-order-service corso-devops-inventory-service corso-devops-notification-service; do
+                        for ${svc} in order-service inventory-service notification-service; do
                             ecr_repo_name = "corso-devops-${svc}"
     
                             echo "--- Pushing ${svc} to ${ecr_repo_name} ---"
@@ -229,6 +229,7 @@ pipeline{
             }
     }
 }
+
 
 
 
