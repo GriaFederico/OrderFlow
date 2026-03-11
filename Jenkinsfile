@@ -3,7 +3,7 @@ pipeline{
 
     environment{
         BUILD_TAG = "${env.BUILD_NUMBER}" //numero BUILD
-        PROJECT_NAME = "OrderFlow"   // nome progetto
+        PROJECT_NAME = "corso-devops-order-service"   // nome progetto
     }
 
     options {
@@ -189,14 +189,21 @@ pipeline{
  
                         echo "=== Pushing images ==="
                         for svc in order-service inventory-service notification-service; do
-                            echo "--- Pushing ${svc} ---"
-                            docker tag ${PROJECT_NAME}/${svc}:${BUILD_TAG} \
-                                ${ECR_REGISTRY}/${svc}:${BUILD_TAG}
-                            docker tag ${PROJECT_NAME}/${svc}:latest \
-                                ${ECR_REGISTRY}/${svc}:latest
-                            docker push ${ECR_REGISTRY}/${svc}:${BUILD_TAG}
-                            docker push ${ECR_REGISTRY}/${svc}:latest
-                            echo "${svc} pushed successfully"
+                            ecr_repo_name = "corso-devops-${svc}"
+    
+                            echo "--- Pushing ${svc} to ${ecr_repo_name} ---"
+                            
+                            // Tagga l'immagine locale con il nome corretto del repository ECR
+                            docker tag OrderFlow/${svc}:${BUILD_TAG} \
+                                ${ECR_REGISTRY}/${ecr_repo_name}:${BUILD_TAG}
+                            docker tag OrderFlow/${svc}:latest \
+                                ${ECR_REGISTRY}/${ecr_repo_name}:latest
+                            
+                            // Pusha le immagini
+                            docker push ${ECR_REGISTRY}/${ecr_repo_name}:${BUILD_TAG}
+                            docker push ${ECR_REGISTRY}/${ecr_repo_name}:latest
+                            
+                            echo "${svc} pushed successfully to ${ecr_repo_name}"
                         done
                     '''
                 }
@@ -222,6 +229,7 @@ pipeline{
             }
     }
 }
+
 
 
 
