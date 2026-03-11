@@ -48,11 +48,11 @@ pipeline{
                         curl -sL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip"
                         cd /tmp && unzip -qo awscliv2.zip
                         chmod +x /tmp/aws/install
-                        /tmp/aws/install --install-dir "$HOME/aws-cli" --bin-dir "$HOME/bin" --update
+                        /tmp/aws/install --install-dir "${TOOLS_DIR}/aws-cli" --bin-dir  ${TOOLS_DIR} --update
                         rm -rf /tmp/awscliv2.zip /tmp/aws
                         echo "Installed: $($HOME/bin/aws --version)"
                     fi
-                    aws --version
+                    
                     echo "=== Tools ready ==="
                    
                     '''
@@ -219,6 +219,7 @@ pipeline{
             }
     }
 }
+
 
 
 
