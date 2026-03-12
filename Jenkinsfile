@@ -3,7 +3,8 @@ pipeline{
 
     environment{
         BUILD_TAG = "${env.BUILD_NUMBER}" //numero BUILD
-        PROJECT_NAME = "OrderFlow"   // nome progetto
+        PROJECT_NAME = "corso-devops"   // nome progetto
+        PROJECT_REPO = "OrderFlow"
     }
 
     options {
@@ -92,8 +93,8 @@ pipeline{
                 sh '''
 
                     docker build \
-                        -t ${PROJECT_NAME}/order-service:${BUILD_TAG} \
-                        -t ${PROJECT_NAME}/order-service:latest \
+                        -t ${PROJECT_REPO}/order-service:${BUILD_TAG} \
+                        -t ${PROJECT_REPO}/order-service:latest \
                         ./order-service
 
                 ''' 
@@ -104,8 +105,8 @@ pipeline{
                 sh '''
 
                     docker build \
-                        -t ${PROJECT_NAME}/inventory-service:${BUILD_TAG} \
-                        -t ${PROJECT_NAME}/inventory-service:latest \
+                        -t ${PROJECT_REPO}/inventory-service:${BUILD_TAG} \
+                        -t ${PROJECT_REPO}/inventory-service:latest \
                         ./inventory-service
                         
                 ''' 
@@ -116,8 +117,8 @@ pipeline{
                 sh '''
 
                     docker build \
-                        -t ${PROJECT_NAME}/notification-service:${BUILD_TAG} \
-                        -t ${PROJECT_NAME}/notification-service:latest \
+                        -t ${PROJECT_REPO}/notification-service:${BUILD_TAG} \
+                        -t ${PROJECT_REPO}/notification-service:latest \
                         ./notification-service
 
                 ''' 
@@ -131,7 +132,7 @@ pipeline{
                 sh '''
                     echo "=== Testing order-service ==="
                     docker run --rm \
-                        ${PROJECT_NAME}/order-service:${BUILD_TAG} \
+                        ${PROJECT_REPO}/order-service:${BUILD_TAG} \
                         python -m pytest tests/ -v --tb=short 2>/dev/null \
                         || echo "No tests directory yet"
                 '''
@@ -145,7 +146,7 @@ pipeline{
                 sh '''
                     echo "=== Testing inventory-service ==="
                     docker run --rm \
-                        ${PROJECT_NAME}/inventory-service:${BUILD_TAG} \
+                        ${PROJECT_REPO}/inventory-service:${BUILD_TAG} \
                         python -m pytest tests/ -v --tb=short 2>/dev/null \
                         || echo "No tests directory yet"
                 '''
@@ -159,7 +160,7 @@ pipeline{
                 sh '''
                     echo "=== Testing notification-service ==="
                     docker run --rm \
-                        ${PROJECT_NAME}/notification-service:${BUILD_TAG} \
+                        ${PROJECT_REPO}/notification-service:${BUILD_TAG} \
                         python -m pytest tests/ -v --tb=short 2>/dev/null \
                         || echo "No tests directory yet"
                 '''
@@ -188,16 +189,14 @@ pipeline{
                             --password-stdin ${ECR_REGISTRY}
  
                         echo "=== Pushing images ==="
-                        for ${svc} in order-service inventory-service notification-service; do
-                            ecr_repo_name = "corso-devops-${svc}"
-    
+                        for ${svc} in order-service inventory-service notification-service; do                         
                             echo "--- Pushing ${svc} to ${ecr_repo_name} ---"
                             
                             // Tagga l'immagine locale con il nome corretto del repository ECR
-                            docker tag OrderFlow/${svc}:${BUILD_TAG} \
-                                ${ECR_REGISTRY}/${ecr_repo_name}:${BUILD_TAG}
-                            docker tag OrderFlow/${svc}:latest \
-                                ${ECR_REGISTRY}/${ecr_repo_name}:latest
+                            docker tag ${PROJECT_NAME}/${svc}:${BUILD_TAG} \
+                                ${ECR_REGISTRY}/${svc}:${BUILD_TAG}
+                            docker tag ${PROJECT_NAME}/${svc}:latest \
+                                ${ECR_REGISTRY}/${svc}:latest
                             
                             // Pusha le immagini
                             docker push ${ECR_REGISTRY}/${ecr_repo_name}:${BUILD_TAG}
@@ -229,6 +228,7 @@ pipeline{
             }
     }
 }
+
 
 
 
