@@ -2,9 +2,9 @@ pipeline{
     agent any
 
     environment{
-        BUILD_TAG = "${env.BUILD_NUMBER}" //numero BUILD
-        PROJECT_NAME = "corso-devops"   // nome progetto
-        PROJECT_REPO = "OrderFlow"
+        BUILD_TAG = "${env.BUILD_NUMBER}" // numero BUILD
+        // PROJECT_NAME = "corso-devops"  
+        PROJECT_NAME = "OrderFlow"     //  nome progetto
     }
 
     options {
@@ -193,16 +193,14 @@ pipeline{
                             echo "--- Pushing ${svc} to ${ecr_repo_name} ---"
                             
                             // Tagga l'immagine locale con il nome corretto del repository ECR
-                            docker tag ${PROJECT_NAME}/${svc}:${BUILD_TAG} \
-                                ${ECR_REGISTRY}/${svc}:${BUILD_TAG}
-                            docker tag ${PROJECT_NAME}/${svc}:latest \
-                                ${ECR_REGISTRY}/${svc}:latest
+                            docker tag ${PROJECT_NAME}/${svc}:${BUILD_TAG} ${ECR_REGISTRY}/corso-devops-${svc}:${BUILD_TAG}
+                            docker tag ${PROJECT_NAME}/${svc}:latest ${ECR_REGISTRY}/corso-devops-${svc}:latest
                             
                             // Pusha le immagini
-                            docker push ${ECR_REGISTRY}/${ecr_repo_name}:${BUILD_TAG}
-                            docker push ${ECR_REGISTRY}/${ecr_repo_name}:latest
+                            docker push ${ECR_REGISTRY}/corso-devops-${svc}:${BUILD_TAG}
+                            docker push ${ECR_REGISTRY}/corso-devops-${svc}:latest
                             
-                            echo "${svc} pushed successfully to ${ecr_repo_name}"
+                            echo "${svc} pushed successfully"
                         done
                     '''
                 }
@@ -228,6 +226,7 @@ pipeline{
             }
     }
 }
+
 
 
 
