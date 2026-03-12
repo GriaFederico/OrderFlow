@@ -93,8 +93,8 @@ pipeline{
                 sh '''
 
                     docker build \
-                        -t ${PROJECT_REPO}/order-service:${BUILD_TAG} \
-                        -t ${PROJECT_REPO}/order-service:latest \
+                        -t ${PROJECT_NAME}/order-service:${BUILD_TAG} \
+                        -t ${PROJECT_NAME}/order-service:latest \
                         ./order-service
 
                 ''' 
@@ -105,8 +105,8 @@ pipeline{
                 sh '''
 
                     docker build \
-                        -t ${PROJECT_REPO}/inventory-service:${BUILD_TAG} \
-                        -t ${PROJECT_REPO}/inventory-service:latest \
+                        -t ${PROJECT_NAME}/inventory-service:${BUILD_TAG} \
+                        -t ${PROJECT_NAME}/inventory-service:latest \
                         ./inventory-service
                         
                 ''' 
@@ -117,8 +117,8 @@ pipeline{
                 sh '''
 
                     docker build \
-                        -t ${PROJECT_REPO}/notification-service:${BUILD_TAG} \
-                        -t ${PROJECT_REPO}/notification-service:latest \
+                        -t ${PROJECT_NAME}/notification-service:${BUILD_TAG} \
+                        -t ${PROJECT_NAME}/notification-service:latest \
                         ./notification-service
 
                 ''' 
@@ -132,7 +132,7 @@ pipeline{
                 sh '''
                     echo "=== Testing order-service ==="
                     docker run --rm \
-                        ${PROJECT_REPO}/order-service:${BUILD_TAG} \
+                        ${PROJECT_NAME}/order-service:${BUILD_TAG} \
                         python -m pytest tests/ -v --tb=short 2>/dev/null \
                         || echo "No tests directory yet"
                 '''
@@ -146,7 +146,7 @@ pipeline{
                 sh '''
                     echo "=== Testing inventory-service ==="
                     docker run --rm \
-                        ${PROJECT_REPO}/inventory-service:${BUILD_TAG} \
+                        ${PROJECT_NAME}/inventory-service:${BUILD_TAG} \
                         python -m pytest tests/ -v --tb=short 2>/dev/null \
                         || echo "No tests directory yet"
                 '''
@@ -160,7 +160,7 @@ pipeline{
                 sh '''
                     echo "=== Testing notification-service ==="
                     docker run --rm \
-                        ${PROJECT_REPO}/notification-service:${BUILD_TAG} \
+                        ${PROJECT_NAME}/notification-service:${BUILD_TAG} \
                         python -m pytest tests/ -v --tb=short 2>/dev/null \
                         || echo "No tests directory yet"
                 '''
@@ -226,6 +226,7 @@ pipeline{
             }
     }
 }
+
 
 
 
