@@ -189,7 +189,7 @@ pipeline{
                             --password-stdin ${ECR_REGISTRY}
  
                         echo "=== Pushing images ==="
-                        for ${svc} in order-service inventory-service notification-service; do                         
+                        for svc in order-service inventory-service notification-service; do                         
                             echo "--- Pushing ${svc} to ${ecr_repo_name} ---"
                             
                             // Tagga l'immagine locale con il nome corretto del repository ECR
@@ -228,6 +228,7 @@ pipeline{
             }
     }
 }
+
 
 
 
