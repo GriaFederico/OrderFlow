@@ -189,12 +189,11 @@ pipeline{
                             --password-stdin ${ECR_REGISTRY}
  
                         echo "=== Pushing images ==="
-                        for svc in order-service inventory-service notification-service; do                     
-                            // Tagga l'immagine locale con il nome corretto del repository ECR
+                        for svc in order-service inventory-service notification-service; do    
                             docker tag ${PROJECT_NAME}/${svc}:${BUILD_TAG} ${ECR_REGISTRY}/corso-devops-${svc}:${BUILD_TAG}
                             docker tag ${PROJECT_NAME}/${svc}:latest ${ECR_REGISTRY}/corso-devops-${svc}:latest
                             
-                            // Pusha le immagini
+                           
                             docker push ${ECR_REGISTRY}/corso-devops-${svc}:${BUILD_TAG}
                             docker push ${ECR_REGISTRY}/corso-devops-${svc}:latest
                             
@@ -224,6 +223,7 @@ pipeline{
             }
     }
 }
+
 
 
 
