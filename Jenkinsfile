@@ -190,7 +190,7 @@ pipeline{
  
                         echo "=== Pushing images ==="
                         for svc in order-service inventory-service notification-service; do                         
-                            echo "--- Pushing ${svc} to ${ecr_repo_name} ---"
+                            echo "--- Pushing ${svc} ---"
                             
                             // Tagga l'immagine locale con il nome corretto del repository ECR
                             docker tag ${PROJECT_NAME}/${svc}:${BUILD_TAG} ${ECR_REGISTRY}/corso-devops-${svc}:${BUILD_TAG}
@@ -218,14 +218,15 @@ pipeline{
                 sh '''
                     echo "=== Final Cleanup ==="
                     for svc in order-service inventory-service notification-service; do
-                        docker rmi ${PROJECT_NAME}/${svc}:${BUILD_TAG} 2>/dev/null || true
-                        docker rmi ${PROJECT_NAME}/${svc}:latest 2>/dev/null || true
+                        docker rmi ${PROJECT_NAME}/corse-devops-${svc}:${BUILD_TAG} 2>/dev/null || true
+                        docker rmi ${PROJECT_NAME}/corse-devops-${svc}:latest 2>/dev/null || true
                     done
                 '''
                 cleanWs()
             }
     }
 }
+
 
 
 
